@@ -1,12 +1,12 @@
 [
     {
-        "equation": "cos(t)",
-        "condition": ["r <= 0"],
+        "equation": "r**(-2)",
+        "condition": ["1 < r"],
         "position": [0,0]
     },
     {
-        "equation": "cos(t+r)*(r)**(-2)",
-        "condition": ["r > 0"],
+        "equation": "1",
+        "condition": ["r <= 1"],
         "position": [0,0]
     }
 ]

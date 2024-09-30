@@ -9,8 +9,8 @@ from sympy.parsing.sympy_parser import parse_expr
 import os
 from pathlib import Path
 from time import time
-#Definining all of the functions used in the program
 
+#Definining all of the functions used in the program
 def ArraytoPNGFormat(data):
     #PURPOSE: Converts data array from solved equations into data that can be convered into a png
     #HOW IT WORKS: data show come in as an rectangular matrix with entries being an integer or a float
@@ -20,8 +20,6 @@ def ArraytoPNGFormat(data):
     max = 0; min = 0
     for row in data:
         for entry in row:
-            #print(entry)
-            #print(type(entry))
             if entry > max: max = entry
             if entry < min: min = entry
     print(str(min) +' to' + str(max))
@@ -45,11 +43,11 @@ def ArraytoPNGFormat(data):
     for row in normalizedarray:
         newrow = ()
         for entry in row:
-            newrow += ColorFilter(entry) #apply color filter / shader
+            newrow += ColorShader(entry) #apply color filter / shader
         newpngformatarray.append(newrow)
     return(newpngformatarray)
 
-def ColorFilter(value):
+def ColorShader(value):
     #Purpose: converts a single value to a colored RGB PNG format.
     #Needs value to be between -1 to 1
     #Output needs to be an integer value, or else it causes png module to error.
@@ -76,7 +74,6 @@ def CalculateArray(size, center, targg):
     compiledfilepath = os.path.join(os.getcwd(), "compiled.json")
     with open(compiledfilepath, 'r') as openfile:
         compiledfile = json.load(openfile)
-    print(compiledfile)
 
     #create an empty rectangular array
     amplitudematrix = []
@@ -100,20 +97,12 @@ def CalculateArray(size, center, targg):
     #calculating the amount of time taken
     endtime = time()
     print("time elapsed: "+str(int(endtime-starttime))+"s")
-
-
-    #Solve each equation at each point and add its value to the x,y coordinate it was taken at
-        #for equations in compiled
-
-    #convertings strings from the compiled.json file into equations that can be solved
-
-    #print(amplitudematrix)
     return(amplitudematrix)
 
     #parse each equation individually and add the values of all point to the things
     
 def CalculateValueAtPoint(equation,conditions,position,xarg,yarg,targ):
-    zoom = 1; xarg = xarg/zoom; yarg = yarg/zoom
+    zoom = 5; xarg = xarg/zoom; yarg = yarg/zoom
     x,y,r,t = symbols("x,y,r,t")
     #calculating radius as radius is used quite a lot
     rvalue = N(sqrt((xarg-position[0])**2 + (yarg-position[1])**2))
@@ -150,9 +139,7 @@ def CalculateValueAtPoint(equation,conditions,position,xarg,yarg,targ):
 #Solving the equation set from compiled.py at all of the points that will be rendered
 
 #Rendering all of the outputs into an image
-#computeddataarray = TestArray
-#RenderIntoPNG(ArraytoPNGFormat(computeddataarray), "RenderedOutput")
  
-computeddataarray = CalculateArray([32,32],[0,0],0)
+computeddataarray = CalculateArray([64,64],[0,0],0)
 #print(computeddataarray)
-RenderIntoPNG(ArraytoPNGFormat(computeddataarray), "TestOutput5")
+RenderIntoPNG(ArraytoPNGFormat(computeddataarray), "TestOutput")
