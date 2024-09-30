@@ -1,11 +1,11 @@
 [
     {
-        "equation": "r**(-2)",
+        "equation": "r**(-2)*cos(r-1)",
         "condition": ["1 < r"],
         "position": [0,0]
     },
     {
-        "equation": "1",
+        "equation": "1*cos(0)",
         "condition": ["r <= 1"],
         "position": [0,0]
     }

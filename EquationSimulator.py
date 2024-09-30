@@ -17,23 +17,25 @@ def ArraytoPNGFormat(data):
 
     #finding maximum and minimum values to normalize from (-1 to 1)
         #negative numbers become red, positive numbers become blue
-    max = 0; min = 0
+    max = 0; min = 0; absmax = 0
     for row in data:
         for entry in row:
             if entry > max: max = entry
             if entry < min: min = entry
+    if abs(min) > max: absmax = abs(min)
+    else: absmax = max
     print(str(min) +' to' + str(max))
 
-    #normalize input array in floats from 0 to 1
+    #normalize input array in floats from -1 to 1
     normalizedarray = [] #this is the array that will have normalized values
     for row in data:
         newrow = []
         for entry in row:
             if entry > 0:
-                newrow.append(float(entry/(max)))
+                newrow.append(float(entry/(absmax)))
             else:
                 if min != 0:
-                    newrow.append(float(entry/(abs(min))))
+                    newrow.append(float(entry/(absmax)))
                 else:
                     newrow.append(float(entry))
         normalizedarray.append(newrow)
@@ -85,12 +87,12 @@ def CalculateArray(size, center, targg):
     for i in range(rows): #looping through y values
         newrow = []
         for j in range(columns): #looping through x values
-            k = 0 #
+            k = 0
+            #summing all equations outputs into a single amplitude for the point at which these calculations are happening
             for l in range(len(compiledfile)): #looping through all equations
-                    #k = i*rows+j #CalculateValueAtPoint(compiledfile[l]["equation"],compiledfile["condition"],j,i,time)
-                    #print (str(i) + ',' + str(j))
-                    k += CalculateValueAtPoint(compiledfile[l]["equation"], compiledfile[l]["condition"], compiledfile[l]["position"], j+xoffset, i+yoffset, targg)
-
+                    #calculating amp and adding it.
+                    k += CalculateValueAtPoint(compiledfile[l], j+xoffset, i+yoffset, targg)
+            #debugging to show what (x,y) coordinate the program is at and what values is being associated at that point
             print("("+str(j+xoffset)+","+str(i+yoffset)+"): "+str(k)); newrow.append(k)
         amplitudematrix.append(newrow)
 
@@ -101,8 +103,11 @@ def CalculateArray(size, center, targg):
 
     #parse each equation individually and add the values of all point to the things
     
-def CalculateValueAtPoint(equation,conditions,position,xarg,yarg,targ):
-    zoom = 5; xarg = xarg/zoom; yarg = yarg/zoom
+def CalculateValueAtPoint(confinedeq,xarg,yarg,targ):
+    equation = confinedeq["equation"]
+    conditions = confinedeq["condition"]
+    position = confinedeq["position"]
+    zoom = 2; xarg = xarg/zoom; yarg = yarg/zoom
     x,y,r,t = symbols("x,y,r,t")
     #calculating radius as radius is used quite a lot
     rvalue = N(sqrt((xarg-position[0])**2 + (yarg-position[1])**2))
@@ -140,6 +145,6 @@ def CalculateValueAtPoint(equation,conditions,position,xarg,yarg,targ):
 
 #Rendering all of the outputs into an image
  
-computeddataarray = CalculateArray([64,64],[0,0],0)
+computeddataarray = CalculateArray([32,32],[20,20],0)
 #print(computeddataarray)
 RenderIntoPNG(ArraytoPNGFormat(computeddataarray), "TestOutput")
