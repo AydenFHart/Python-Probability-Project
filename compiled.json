@@ -1,6 +1,6 @@
 [
     {
-        "equation": "r**(-2)*cos(r-1)",
+        "equation": "(r)**(-2) *cos(r-1)",
         "condition": ["1 < r"],
         "position": [0,0]
     },
